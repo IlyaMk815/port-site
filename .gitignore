@@ -2,3 +2,4 @@
 /PortSite/settings.py
 /baseApp_cache
 /BaseApp/static
+/BaseApp/__pycache__
