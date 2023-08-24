@@ -3,3 +3,4 @@
 /baseApp_cache
 /BaseApp/static
 /BaseApp/__pycache__
+/BaseApp/migrations
