@@ -1,0 +1,49 @@
+{% extends 'BaseApp/base.html' %}
+
+{% block content %}
+
+<form id="post_form" method="post" action="{% url 'add_post' %}" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="container form_block">
+        {% for hidden in postForm.hidden_fields %}
+        <p>
+            <label class="form_cont" for="{{ hidden.id_for_label }}">
+                {{hidden.label}}
+            </label>
+            {{hidden}}
+        </p>
+        <div class="form-error">{{ hidden.errors }}</div>
+        {% endfor %}
+  
+        {% for field in postForm %}
+        <p>
+            <label class="form_cont" for="{{ hidden.id_for_label }}">
+                {{field.label}}
+            </label>
+            {{ field }}
+        </p>
+        <div class="form-error">{{ field.errors }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="container form_block">
+        {{ formset.management_form }}
+
+        <p>Выберите фото для статьи:</p>
+        <hr>
+        {% for form in formset %}
+        <p>
+            <label class="form_cont" for="{{ form.id_for_label }}">
+                {{ form }}
+            </label>
+        </p>
+        <div class="form-error">{{ form.errors }}</div>
+        {% endfor %}
+    </div>
+
+    <input class="form_block copy_btn" type="submit" name="submit" value="Добавить" />
+</form>
+
+{% endblock content %}

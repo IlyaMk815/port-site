@@ -1,0 +1,36 @@
+{% extends 'BaseApp/base.html' %}
+
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <div class="container content_block">
+        <p class="content_text">
+            Вы уже авторизованы &#128528;
+        </p>
+    </div>
+    {% else %}
+
+    <div class="container side_menu_wrap">
+        <div class="container login_head">
+            <h1>ВХОД:</h1>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+    
+            <div class="input_wrap">
+                <div class="form-error">
+                    {{ form.non_field_errors }}
+                </div>
+    
+                {% for f in form %}
+                <p><label for="{{ f.id_for_label }}">{{ f.label }}: </label></p>
+                {{ f }}
+                <div class="form-error">{{ f.errors }}</div>
+                {% endfor %}
+    
+                <button type="submit" class="copy_btn submit_btn">Войти</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+{% endblock content %}

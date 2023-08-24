@@ -1,0 +1,24 @@
+{% extends 'BaseApp/base.html' %}
+
+{% block content %}
+<form id="comment_delete_form" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="container content_block form_block">
+        <div class="container content_block">
+            <div class="comment_block">
+                <h2>Удалить коммент?</h2>
+                    <a href="{{ comment_delete.author.get_absolute_url }}" class="lables post_user_lable">
+                        <img src="{{ comment_delete.author.profile_pic.url }}"
+                            class="profile_pic profile_pic_small">{{comment_delete.author.nick_name}}</a>
+                <p class="comment_length">{{comment_delete.text}}</p>
+            </div>
+        </div>
+        <div class="container">
+            <a href="{% url 'home' %}" class="form_block copy_btn link_wrap">Вернуться на главную</a>
+            <input class="form_block copy_btn link_wrap" type="submit" name="submit" value="Удалить" />
+        </div>
+    </div>
+</form>
+{% endblock content %}

@@ -1,0 +1,58 @@
+{% extends 'BaseApp/base.html' %}
+{% load baseapp_tags %}
+
+{% block content%}
+{% if posts %}
+<ul class="posts_block">
+    {% for post in posts %}
+    <li class="post_block">
+        <div class="post_header_block">
+            <a href="{{ post.user.profile.get_absolute_url }}" class="lables post_user_lable">
+                <img class="profile_pic profile_pic_small"
+                    src="{{ post.user.profile.profile_pic.url }}">{{post.user.profile.nick_name}}</a>
+            <a href="{{ post.get_absolute_url }}" class="post_title">{{post.title}}</a>
+            {% get_posts_photos filter=post.id as photos %}
+            <p class="lables post_user_lable">Рейтинг: {{ post.rating.count }}</p>
+            {% get_photos_count filter=post.id as photos_count %}
+            {% if photos_count > 1 %}
+            <a href="{{ post.get_absolute_url }}" class="lables post_user_lable">Ещё {{photos_count|add:-1}} фото и 
+                {{post.comments_posts.all.count}} {% comm_word count=post.comments_posts.all.count %} в
+                статье -></a>
+            {% else %}
+            <a href="{{ post.get_absolute_url }}" class="lables post_user_lable">{{post.comments_posts.all.count}} 
+                {% comm_word count=post.comments_posts.all.count %} в
+                статье -></a>
+            {% endif %}
+        </div>
+
+        <div class="picture_container">
+            <img src="{{photos.0.image.url}}" class="picture_main">
+        </div>
+
+        <div class="container content_block content_text">
+            <p>
+                {% autoescape on %}
+                {{post.content|linebreaks|truncatewords:30}}
+                {% endautoescape %}
+            </p>
+        </div>
+
+        <div class="read_post_link">
+            {% if request.user == post.user %}
+            <p class="read_post_link "><a href="{% url 'post_update' post.slug %}" class="link_wrap">Обновить</a>
+            </p>
+            <p class="read_post_link"><a href="{% url 'post_delete' post.slug %}" class="link_wrap">Удалить</a></p>
+            {% endif %}
+            <p class="read_post_link"><a href="{{ post.get_absolute_url }}" class="link_wrap">Читать</a></p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="container content_block">
+    <p class="content_text">
+        Нет статей &#128528;
+    </p>
+</div>
+{% endif %}
+{% endblock content %}

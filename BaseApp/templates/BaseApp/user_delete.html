@@ -1,0 +1,18 @@
+{% extends 'BaseApp/base.html' %}
+
+{% block content %}
+<form id="user_delete_form" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="container content_block form_block">
+        <div class="container">
+            <h2 class="red_flag">УДАЛИТЬ ПОЛЬЗОВАТЕЛЯ {{request.user}}?</h2>
+        </div>
+        <div class="container">
+            <a href="{% url 'home' %}" class="form_block copy_btn link_wrap">Вернуться на главную</a>
+            <input class="form_block copy_btn link_wrap" type="submit" name="submit" value="Удалить" />
+        </div>
+    </div>
+</form>
+{% endblock content %}

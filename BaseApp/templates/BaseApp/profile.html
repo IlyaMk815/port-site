@@ -1,0 +1,67 @@
+{% extends 'BaseApp/base.html' %}
+
+{% block content %}
+
+
+{% if request.user == profile_fields.user %}
+<div class="container content_container profile_container">
+    <div class="container content_block">
+        <h2>{{profile_fields.user.username}}</h2>
+    </div>
+
+    <div class="container">
+        <div class="container content_container">
+            <p>
+                <img class="profile_pic" src="{{profile_fields.profile_pic.url}}">
+            </p>
+        </div>
+
+        <div class="container content_block">
+            <div class="container content_block">
+                <p class="lables lables_profile">Никнейм: </p>
+                <p class="lables_profile">{{profile_fields.nick_name}}</p>
+            </div>
+            <div class="container content_block">
+                <p class="lables lables_profile">@Email: </p>
+                <p class="lables_profile">{{profile_fields.user.email}}</p>
+            </div>
+            <div class="container content_block">
+                <p class="lables lables_profile">Создан: </p>
+                <p class="lables_profile">{{profile_fields.time_create}}</p>
+            </div>
+            {% for menu_part in profile_menu %}
+            <a href="{% url menu_part.url_name %}" class="link_wrap submit_btn">{{menu_part.title}}</a>
+            {% endfor %}
+            <a href="{% url 'user_delete' request.user.pk %}" class="link_wrap submit_btn">Удалить профиль</a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container content_container profile_container">
+    <div class="container content_block">
+        <h2>{{profile_fields.nick_name}}</h2>
+    </div>
+
+    <div class="container">
+        <div class="container content_container">
+            <p>
+                <img class="profile_pic" src="{{profile_fields.profile_pic.url}}">
+            </p>
+        </div>
+
+        <div class="container content_block">
+            <div class="container content_block">
+                <p class="lables lables_profile">Никнейм: </p>
+                <p class="lables_profile">{{profile_fields.nick_name}}</p>
+            </div>
+            <div class="container content_block">
+                <p class="lables lables_profile">Создан: </p>
+                <p class="lables_profile">{{profile_fields.time_create}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock content%}

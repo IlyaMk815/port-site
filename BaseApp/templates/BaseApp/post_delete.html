@@ -1,0 +1,21 @@
+{% extends 'BaseApp/base.html' %}
+
+{% block content %}
+{% if request.user == post_delete.user %}
+<form id="post_delete_form" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="container form_block">
+        <p class="lables">Удалить статью?
+        <h2 class="title_length">{{post_delete.title}}</h2>
+        </p>
+        {{post_delete.as_p}}
+    </div>
+    <div class="container comm_menu_block">
+        <a href="{% url 'home' %}" class="form_block copy_btn link_wrap">Вернуться на главную</a>
+        <input class="form_block copy_btn" type="submit" name="submit" value="Удалить" />
+    </div>
+</form>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,207 @@
+{% load static %}
+{% load baseapp_tags %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link type="text/css" href="{% static 'BaseApp/css/styles.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <header class="container header_wrap conteiner_special_display">
+
+        {% if request.user.is_authenticated %}
+
+        <div class="headermenu_element">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'home' %}" class="lables post_user_lable header_user_label">
+                <img class="profile_pic profile_pic_small" src="{{ request.user.profile.profile_pic.url }}">
+                <nobr>
+                    {{request.user.profile.nick_name}}
+                </nobr>
+            </a>
+            {% endif %}
+        </div>
+
+        {% else %}
+        <div class="container logo_wrap">
+            <a href="{% url 'home' %}" class="header_home_link">
+                <svg class="container header_home" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 64 64" width="48px" height="48px">
+                    <g>
+                        <path d="M16,54c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C15,53.6,15.4,54,16,54z" />
+                        <path d="M11,54c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C10,53.6,10.4,54,11,54z" />
+                        <path d="M46,54c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C45,53.6,45.4,54,46,54z" />
+                        <path d="M51,54c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C50,53.6,50.4,54,51,54z" />
+                        <path
+                            d="M26,24c0,2.8,2.2,5,5,5s5-2.2,5-5s-2.2-5-5-5S26,21.2,26,24z M34.2,24c0,1.8-1.4,3.2-3.2,3.2s-3.2-1.4-3.2-3.2s1.4-3.2,3.2-3.2S34.2,22.2,34.2,24z" />
+                        <path d="M33,49c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C32,48.6,32.4,49,33,49z" />
+                        <path
+                            d="M56.7,35.4c0.9,0.7,2.1,0.6,2.8-0.3c0.3-0.4,0.5-0.8,0.5-1.3V31c0-0.9-0.4-1.8-1.1-2.3l-26-21.4c-1.1-0.9-2.7-0.9-3.8,0L18,16.4v-3.3c0-0.6-0.4-1-1-1s-1,0.4-1,1v5l-2,1.6V9.1c0-0.6-0.4-1-1-1s-1,0.4-1,1v12c0,0.1,0,0.1,0,0.2l-8.9,7.4C2.4,29.2,2,30.1,2,31v2.9c0,0.8,0.4,1.5,1.2,1.8c0.7,0.3,1.5,0.2,2.1-0.3L6,34.8V56H3c-0.6,0-1,0.4-1,1s0.4,1,1,1h56c0.6,0,1-0.4,1-1s-0.4-1-1-1h-3V34.8L56.7,35.4z M24,56h-2h-2H8v-8h16V56z M36,56H26V38h10V56z M54,56H42h-2h-2v-8h16V56z M54,38v8H38v-8c0-1.1-0.9-2-2-2H26c-1.1,0-2,0.9-2,2v8H8v-8v-4.8l23-18.9l23,18.9V38z M32.3,12.8c-0.7-0.6-1.8-0.6-2.5,0L4,33.9V31c0-0.3,0.1-0.6,0.4-0.8l26-21.4c0.4-0.3,0.9-0.3,1.3,0l26,21.4c0.2,0.2,0.4,0.5,0.4,0.8v2.9L32.3,12.8z" />
+                        <path d="M21,54c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C20,53.6,20.4,54,21,54z" />
+                        <path d="M41,54c0.6,0,1-0.4,1-1v-2c0-0.6-0.4-1-1-1s-1,0.4-1,1v2C40,53.6,40.4,54,41,54z" />
+                    </g>
+                </svg>
+            </a>
+        </div>
+        {% endif %}
+
+        {% block mainmenu %}
+        <nav class="container nav_wrap">
+            <ul class="container">
+                {% for m in base_menu %}
+                <li class="headermenu_element">
+                    <a href="{% url m.url_name %}" class="container headermenu_element_link">{{m.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        {% endblock mainmenu %}
+        {% block menu_last_elements %}
+        <div class="headermenu_element last_menu_elem">
+            {% if request.user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="container headermenu_element_link">ВЫХОД</a>
+            {% else %}
+            <a href="{% url 'register' %}" class="container headermenu_element_link">РЕГИСТРАЦИЯ</a>
+            {% endif %}
+        </div>
+        {% endblock menu_last_elements %}
+    </header>
+    <div class="container main_wrapper">
+        <aside class="container aside_block">
+            {% block sidemenu %}
+
+            {% if request.user.is_authenticated %}
+            <ul class="container side_menu_wrap">
+                {% for menu_part in user_menu %}
+                <li class="menu_element">
+                    <a href="{% url menu_part.url_name %}" class="link_wrap u_menu_link_wrap">{{menu_part.title}}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <ul class="container side_menu_wrap">
+                <li class="menu_element">
+                    <a href="{% url 'login' %}" class="link_wrap u_menu_link_wrap">Войти</a>
+                </li>
+                <li class="menu_element">
+                    <a href="{% url 'register' %}" class="link_wrap u_menu_link_wrap">Регистрация</a>
+                </li>
+            </ul>
+            {% endif %}
+            {% endblock sidemenu %}
+
+            {% get_first_3 as top3 %}
+            {% if top3 %}
+            <div>
+                <br>
+                <br>
+                <h3>
+                    Топ статей:
+                </h3>
+                <ul class="container side_menu_wrap">
+                {% for post in top3 %}
+                {% get_posts_photos filter=post.id as photos %}
+                    <li class="menu_element">
+                        
+                        <a href="{% url 'post_view' post.slug %}" class="post_title lables post_user_lable user_lable_side_top">
+                            {{post.title}}
+                        </a>
+
+                        {% if photos %}
+                        <a href="{% url 'post_view' post.slug %}" class="link_wrap u_menu_link_wrap u_menu_link_wrap_update">
+                            <div>
+                                <img class="side_menu_top_pic" src="{{ photos.0.image.url }}">
+                            </div>
+                        </a>
+                        {% endif %}
+
+                        <p class="lables post_user_lable small_label">
+                            Рейтинг: {{ post.rating.count }}
+                        </p>
+                        <div>
+                            <hr>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            </div>
+            {% else %}
+            <div class="container content_block">
+                <p class="content_text">
+                    Нет статей &#128528;
+                </p>
+            </div>
+            {% endif %}
+        </aside>
+        <main class="container content_container main_block">
+
+            <div>
+                <div class="message_container">
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>
+                            {{ message }}
+                            </li>
+                            {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                {% block content %}
+                {% endblock content %}
+            </div>
+
+
+            {% block pagination %}
+            {%if page_obj.has_other_pages%}
+            <nav class="paginate paginate-dark">
+                <ul>
+                    {%if page_obj.has_previous%}
+                    <li>
+                        <a href="?page=1">&laquo; First</a>
+                    </li>
+                    <li>
+                        <a href="?page={{page_obj.previous_page_number}}">&lsaquo;</a>
+                    </li>
+                    {%endif%}
+                    {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                    <li>
+                        <a href="" class="active">{{p}}</a>
+                    </li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %} <li>
+                        <a href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {%if page_obj.has_next%}
+                        <li>
+                            <a href="?page={{page_obj.next_page_number}}">&rsaquo;</a>
+                        </li>
+                        <li>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                        </li>
+                        {%endif%}
+                </ul>
+            </nav>
+            {%endif%}
+            {% endblock pagination %}
+
+        </main>
+        <aside class="container aside_block">
+            {% block loginwindow %}
+            {% endblock loginwindow %}
+        </aside>
+    </div>
+    <footer class="container footer_wrap">
+        <p class="footer_text">© Copyright 2023</p>
+    </footer>
+    </div>
+</body>
+
+</html>

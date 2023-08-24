@@ -1,0 +1,45 @@
+{% extends 'BaseApp/base.html' %}
+
+
+{% block content %}
+
+<div class="container content_block">
+    <form id="post_form" method="post" action="{% url 'profile_update_form' %}" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <div class="container form_block">
+            <div class="form-error">
+                {{ user_update.non_field_errors }}
+            </div>
+
+            <p>
+                <label class="form_cont" for="user_update.email.id_for_label">
+                    @Email:
+                </label>
+                {{ user_update.email }}
+            <div class="form-error">{{ user_update.errors }}</div>
+            </p>
+        </div>
+
+        <div class="container form_block">
+            <div class="form-error">
+                {{ profile_update.non_field_errors }}
+            </div>
+
+            {% for field in profile_update %}
+            <p>
+                <label class="form_cont">
+                    {{field.label}}:
+                </label>
+                {{ field }}
+            <div class="form-error">{{ field.errors }}</div>
+            </p>
+
+            {% endfor %}
+        </div>
+
+        <input class="form_block copy_btn" type="submit" name="submit" value="Обновить" />
+    </form>
+</div>
+{% endblock content %}

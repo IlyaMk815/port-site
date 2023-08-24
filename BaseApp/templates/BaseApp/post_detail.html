@@ -1,0 +1,141 @@
+{% extends 'BaseApp/base.html' %}
+{% load baseapp_tags %}
+
+{% block content %}
+
+<div class="posts_block posts_block_detail">
+        <div class="post_header_block">
+                <a href="{{ post_view.user.profile.get_absolute_url }}" class="lables post_user_lable">
+                        <img src="{{ post_view.user.profile.profile_pic.url }}"
+                                class="profile_pic profile_pic_small">{{post_view.user.profile.nick_name}}</a>
+                <h2>{{post_view.title}}</h2>
+                <hr>
+                {% if request.user == post_view.user %}
+                <a href="{% url 'post_update' post_view.slug %}" class="link_wrap">Обновить</a>
+                <a href="{% url 'post_delete' post_view.slug %}" class="link_wrap">Удалить</a>
+                {% endif %}
+        </div>
+
+        {% get_posts_photos filter=post_view.id as post_photos %}
+
+        <div class="picture_container">
+                {% for photo in post_photos %}
+                <img src="{{photo.image.url}}" class="picture_main">
+                {% endfor %}
+        </div>
+
+        <div class="content_block content_block_detail content_text">
+                <p>
+                        {{post_view.content|linebreaksbr}}
+                </p>
+        </div>
+
+        <div>
+                {% if request.user.is_authenticated %}
+                        <form action="{% url 'rating_post' post_view.slug %}" method="POST">
+                                {% csrf_token %}
+                                <p class="lables post_user_lable">
+                                        Рейтинг: {{ rating_count }}
+                                        {% if not rating_status %}
+                                        <button type="submit" name="post_slug" value="{{post_view.slug}}" class="rating_detail_block copy_btn rtn-btn-up"> Up &uarr;</button>
+                                        {% else %}
+                                        <button type="submit" name="post_slug" value="{{post_view.slug}}" class="rating_detail_block copy_btn rtn-btn-dwn"> Down &darr;</button>
+                                        {% endif %}
+                                </p>
+                        </form>
+                {% else %}
+                        <br>
+                        <p class="lables post_user_lable">
+                                Рейтинг: {{ rating_count }}
+                        </p>
+                        <br>
+                {% endif %}
+        </div>
+</div>
+
+<div class="posts_block comment_block">
+        <p class="lables post_user_lable">Комментарии ({{ comm_count }}):</p>
+
+        {% if request.user.is_authenticated %}
+        <form action="" method="post">
+                {% csrf_token %}
+                <p class="comment_form_block">
+                        {{form}}
+                </p>
+
+                <input class="copy_btn" type="submit" name="submit" value="Добавить" />
+        </form>
+        {% else %}
+        <p class="post_user_lable no_flex">
+                <a href="{% url 'login' %}" class="lables" style="padding-right: 5px;">Войдите</a> или
+                <a href="{% url 'register' %}" class="lables" style="padding: 0 5px 0 5px;">зарегистрируйтесь</a> чтобы оставить комментарий
+        </p>
+        {% endif %}
+        <div id="comments">
+                <hr>
+                <ul>
+                        {% for item in object_list %}
+
+                        <li>
+                                <a href="{{ item.author.get_absolute_url }}" class="lables post_user_lable">
+                                        <img src="{{ item.author.profile_pic.url }}"
+                                                class="profile_pic profile_pic_small">{{item.author.nick_name}}</a>
+                                {% if item.time_update %}
+                                <p>Обновлён: {{item.time_update}}</p>
+                                {% else %}
+                                <p>Создан: {{item.time_created}}</p>
+                                {% endif %}
+                                {% if request.user == post_view.user or request.user.profile == item.author%}
+                                <div class="comm_menu_block">
+                                        <a href="{% url 'comment_delete' item.pk %}" class="small_link_wrap">Удалить</a>
+                                        {% if request.user.profile == item.author%}
+                                        <a href="{% url 'comment_update' item.pk %}"
+                                                class="small_link_wrap">Обновить</a>
+                                        {% endif %}
+                                </div>
+                                {% else %}
+                                {% endif %}
+                                <p>{{item.text}}</p>
+                        </li>
+                        <hr>
+                        {% endfor %}
+                </ul>
+
+                {%if page_obj.has_other_pages%}
+                <nav class="paginate paginate-dark">
+                        <ul>
+                                {%if page_obj.has_previous%}
+                                <li>
+                                        <a href="?page=1">&laquo; First</a>
+                                </li>
+                                <li>
+                                        <a href="?page={{page_obj.previous_page_number}}">&lsaquo;</a>
+                                </li>
+                                {%endif%}
+                                {% for p in paginator.page_range %}
+                                {% if page_obj.number == p %}
+                                <li>
+                                        <a href="" class="active">{{p}}</a>
+                                </li>
+                                {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %} <li>
+                                        <a href="?page={{ p }}">{{ p }}</a>
+                                        </li>
+                                        {% endif %}
+                                        {% endfor %}
+                                        {%if page_obj.has_next%}
+                                        <li>
+                                                <a href="?page={{page_obj.next_page_number}}">&rsaquo;</a>
+                                        </li>
+                                        <li>
+                                                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+                                        </li>
+                                        {%endif%}
+                        </ul>
+                </nav>
+                {%endif%}
+        </div>
+</div>
+
+{% endblock content %}
+{% block pagination %}
+{% endblock pagination %}

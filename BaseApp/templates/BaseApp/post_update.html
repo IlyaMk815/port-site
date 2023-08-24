@@ -1,0 +1,34 @@
+{% extends 'BaseApp/base.html' %}
+
+{% block content %}
+
+<form id="post_update_form" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="container form_block">
+
+        {% for hidden in form.hidden_fields %}
+        <p>
+            <label class="form_cont" for="{{ hidden.id_for_label }}">
+                {{hidden.label}}
+            </label>
+            {{hidden}}
+        </p>
+        {% endfor %}
+       
+        {% for field in form %}
+        <p>
+            <label class="form_cont" for="{{ hidden.id_for_label }}">
+                {{field.label}}
+            </label>
+            {{ field }}
+        </p>
+        <div class="form-error">{{ field.errors }}</div>
+        {% endfor %}
+    </div>
+
+    <input class="form_block copy_btn" type="submit" name="submit" value="Обновить" />
+</form>
+
+{% endblock content %}

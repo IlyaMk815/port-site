@@ -1,0 +1,29 @@
+{% extends 'BaseApp/base.html' %}
+
+
+{% block content %}
+<table align="left" cellspacing="5" style="padding-top: 48px;" class="container">
+    {% for c in my_contacts%}
+    <tr>
+        <td>
+            <p style="padding: 5px 15px 5px 15px;">{{ c.contact }}:</p>
+        </td>
+        <td>
+            <input class="input_field" readonly="readonly" type="text" value="{{ c.contact_data }}" id="{{ c.contact_data }}">
+        </td>
+        <td>
+            <button class="copy_btn" onclick="copyToClipboard('{{ c.contact_data }}')">Copy!</button>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<script>
+    function copyToClipboard(element) {
+        var copyText = document.getElementById(element);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+        alert("\nCopied:    " + copyText.value);
+    }
+</script>
+{% endblock content%}
