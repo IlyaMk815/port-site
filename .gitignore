@@ -4,6 +4,7 @@
 /BaseApp/static
 /BaseApp/__pycache__/
 /BaseApp/migrations
+/BaseApp/templatetags/__pycache__/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,5 +1,6 @@
 {% extends 'BaseApp/base.html' %}
 {% load baseapp_tags %}
+{% load cache %}
 
 {% block content%}
 {% if rated_posts %}
@@ -11,6 +12,7 @@
                 <img src="{{ post.user.profile.profile_pic.url }}"
                     class="profile_pic profile_pic_small">{{post.user.profile.nick_name}}</a>
             <a href="{{ post.get_absolute_url }}" class="post_title">{{post.title}}</a>
+            <p class="lables post_user_lable">Рейтинг: {{ post.rating.count }}</p>
             {% get_posts_photos filter=post.id as photos %}
             {% if photos.count > 1 %}
             <a href="{{ post.get_absolute_url }}" class="lables post_user_lable">Ещё {{photos.count|add:-1}} фото и 
@@ -24,7 +26,9 @@
         </div>
 
         <div class="picture_container">
+            {% cache 300 post_rated_image photos %}
             <img src="{{photos.0.image.url}}" class="picture_main">
+            {% endcache %}
         </div>
 
         <div class="container content_block content_text">

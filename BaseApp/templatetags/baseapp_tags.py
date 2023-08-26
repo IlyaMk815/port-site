@@ -29,10 +29,10 @@ def get_first_3():
     """
     Returns a list of the first three posts by rating
     """
-    top = cache.get('top')
+    top = cache.get('top3')
     if not top:
         top = Post.objects.only('slug', 'title').annotate(top_rait=Count('rating')).order_by('-top_rait')[:3]
-        cache.set('top', top, 60*5)
+        cache.set('top3', top, 60*5)
     return top
 
 

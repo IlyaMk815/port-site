@@ -23,13 +23,17 @@ class MainPage(ListView):
     template_name = 'BaseApp/index.html'
     model = Post
     context_object_name = 'posts'
-    paginate_by = 4
+    paginate_by = 2
     extra_context = {
         'title': 'Главная'
     }
 
     def get_queryset(self):
-        return Post.objects.select_related('user__profile').prefetch_related('comments_posts', 'rating').all()
+        posts_qs = cache.get('posts_qs')
+        if not posts_qs:
+            posts_qs = Post.objects.select_related('user__profile').prefetch_related('comments_posts', 'rating').all()
+            cache.set('posts_qs', posts_qs, 60*2)
+        return posts_qs
 
 
 class PostDetailView(FormMixin, SuccessMessageMixin, DetailView, MultipleObjectMixin):
@@ -228,8 +232,11 @@ class RatedPages(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self):
-        queryset = Post.objects.select_related('user', 'user__profile').filter(rating=self.request.user)
-        return queryset
+        posts_rated_qs = cache.get('posts_rated_qs')
+        if not posts_rated_qs:
+            posts_rated_qs = Post.objects.select_related('user', 'user__profile').filter(rating=self.request.user)
+            cache.set('posts_rated_qs', posts_rated_qs, 60 * 2)
+        return posts_rated_qs
 
 
 class UserPosts(LoginRequiredMixin, ListView):
@@ -242,7 +249,10 @@ class UserPosts(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self):
-        user_posts = Post.objects.select_related('user', 'user__profile').filter(user=self.request.user)
+        user_posts = cache.get('user_posts')
+        if not user_posts:
+            user_posts = Post.objects.select_related('user', 'user__profile').filter(user=self.request.user)
+            cache.set('user_posts', user_posts, 60 * 2)
         return user_posts
 
 

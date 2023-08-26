@@ -1,5 +1,6 @@
 {% extends 'BaseApp/base.html' %}
 {% load baseapp_tags %}
+{% load cache %}
 
 {% block content%}
 {% if posts %}
@@ -26,7 +27,9 @@
         </div>
 
         <div class="picture_container">
+            {% cache 300 post_image photos %}
             <img src="{{photos.0.image.url}}" class="picture_main">
+            {% endcache %}
         </div>
 
         <div class="container content_block content_text">
