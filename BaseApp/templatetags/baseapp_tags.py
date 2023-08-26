@@ -32,7 +32,7 @@ def get_first_3():
     top = cache.get('top3')
     if not top:
         top = Post.objects.only('slug', 'title').annotate(top_rait=Count('rating')).order_by('-top_rait')[:3]
-        cache.set('top3', top, 60*5)
+        cache.set('top3', top, 60*10)
     return top
 
 

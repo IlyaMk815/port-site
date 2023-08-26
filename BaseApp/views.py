@@ -32,7 +32,7 @@ class MainPage(ListView):
         posts_qs = cache.get('posts_qs')
         if not posts_qs:
             posts_qs = Post.objects.select_related('user__profile').prefetch_related('comments_posts', 'rating').all()
-            cache.set('posts_qs', posts_qs, 60*2)
+            cache.set('posts_qs', posts_qs, 60*10)
         return posts_qs
 
 
@@ -235,7 +235,7 @@ class RatedPages(LoginRequiredMixin, ListView):
         posts_rated_qs = cache.get('posts_rated_qs')
         if not posts_rated_qs:
             posts_rated_qs = Post.objects.select_related('user', 'user__profile').filter(rating=self.request.user)
-            cache.set('posts_rated_qs', posts_rated_qs, 60 * 2)
+            cache.set('posts_rated_qs', posts_rated_qs, 60 * 10)
         return posts_rated_qs
 
 
@@ -252,7 +252,7 @@ class UserPosts(LoginRequiredMixin, ListView):
         user_posts = cache.get('user_posts')
         if not user_posts:
             user_posts = Post.objects.select_related('user', 'user__profile').filter(user=self.request.user)
-            cache.set('user_posts', user_posts, 60 * 2)
+            cache.set('user_posts', user_posts, 60 * 10)
         return user_posts
 
 
