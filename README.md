@@ -28,9 +28,9 @@ their modification and deletion</li>
 
 <h3>Screenshots</h3>
 
-![screenshot](https://github.com/IlyaMk815/port-site/blob/main/4.png?raw=true)
-![screenshot](https://github.com/IlyaMk815/port-site/blob/main/1.png?raw=true)
-![screenshot](https://github.com/IlyaMk815/port-site/blob/main/2.png?raw=true)
+<img src="https://github.com/IlyaMk815/port-site/blob/main/4.png" width="200" alt="Screenshot">
+<img src="https://github.com/IlyaMk815/port-site/blob/main/1.png" width="200" alt="Screenshot">
+<img src="https://github.com/IlyaMk815/port-site/blob/main/2.png" width="200" alt="Screenshot">
 
 <p><h3 style="color: #F7943C;">What is the
 purpose of the project?</h3>
