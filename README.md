@@ -25,6 +25,13 @@ their modification and deletion</li>
 <h1 style="color: #F7943C;"> General information </h1>
 
 <p>The project uses django version 4.2.1 and python version 3.10.</p>
+
+<h3>Screenshots</h3>
+
+![screenshot](https://github.com/IlyaMk815/port-site/blob/main/4.png?raw=true)
+![screenshot](https://github.com/IlyaMk815/port-site/blob/main/1.png?raw=true)
+![screenshot](https://github.com/IlyaMk815/port-site/blob/main/2.png?raw=true)
+
 <p><h3 style="color: #F7943C;">What is the
 purpose of the project?</h3>
 <p>At the beginning, this project did not have any architecture, because I did not know what I wanted to do.
