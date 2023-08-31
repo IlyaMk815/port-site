@@ -332,10 +332,10 @@ def user_updating_view(request):
             user.email = user_update.cleaned_data['email']
             user.save()
 
-            pic_name = Profile.objects.get(user=request.user).profile_pic
-            if os.path.exists(os.path.join(settings.MEDIA_ROOT, str(pic_name))):
+            pic_name = str(Profile.objects.get(user=request.user).profile_pic)
+            if os.path.exists(os.path.join(settings.MEDIA_ROOT, pic_name)):
                 u_profile.profile_pic = profile_update.cleaned_data['profile_pic']
-                os.remove(os.path.join(settings.MEDIA_ROOT, str(pic_name)))
+                os.remove(os.path.join(settings.MEDIA_ROOT, pic_name))
             else:
                 u_profile.profile_pic = profile_update.cleaned_data['profile_pic']
             u_profile.nick_name = profile_update.cleaned_data['nick_name']
